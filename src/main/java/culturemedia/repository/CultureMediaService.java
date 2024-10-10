@@ -7,6 +7,6 @@ import java.util.List;
 
 public interface CultureMediaService {
     List<Video> listAllVideos();
-    Video addV(Video video);
+    Video add(Video video);
     Video add(View view);
 }
