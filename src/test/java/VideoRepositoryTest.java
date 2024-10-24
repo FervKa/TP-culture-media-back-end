@@ -1,6 +1,7 @@
 import java.util.ArrayList;
 import java.util.List;
 
+import culturemedia.exceptions.VideoNotFoundException;
 import culturemedia.repository.VideoRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -9,6 +10,7 @@ import culturemedia.model.Video;
 import culturemedia.repository.impl.VideoRepositoryImpl;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 class VideoRepositoryTest {
 
@@ -42,7 +44,6 @@ class VideoRepositoryTest {
     @Test
     void when_FindByTitle_only_videos_which_contains_the_word_in_the_title_should_be_returned_successfully() {
         List<Video> videos = videoRepository.find( "Clic" );
-        System.out.println(videos);
         assertEquals(2, videos.size());
     }
 
@@ -56,14 +57,13 @@ class VideoRepositoryTest {
     void when_FindByTitle_does_not_match_any_video_an_empty_list_should_be_returned_successfully() {
         List<Video> videos = videoRepository.find("Tragos y encierro");
         videos = (videos == null) ? new ArrayList<>() : videos;
-        assertEquals(0, videos.size());
+        assertTrue(videos.isEmpty());
     }
 
     @Test
     void when_FindByDuration_does_not_match_any_video_an_empty_list_should_be_returned_successfully() {
         List<Video> videos = videoRepository.find( 10.0, 13.0 );
         videos = (videos == null) ? new ArrayList<>() : videos;
-        assertEquals(0, videos.size());
+        assertTrue(videos.isEmpty());
     }
-
 }
