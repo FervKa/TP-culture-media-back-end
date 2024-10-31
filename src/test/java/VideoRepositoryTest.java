@@ -42,7 +42,7 @@ class VideoRepositoryTest {
     }
 
     @Test
-    void when_FindByTitle_only_videos_which_contains_the_word_in_the_title_should_be_returned_successfully() {
+    void when_FindByTitle_only_videos_which_contains_the_word_in_the_title_should_be_returned_successfully() throws VideoNotFoundException {
         List<Video> videos = videoRepository.find( "Clic" );
         assertEquals(2, videos.size());
     }
@@ -54,7 +54,7 @@ class VideoRepositoryTest {
     }
 
     @Test
-    void when_FindByTitle_does_not_match_any_video_an_empty_list_should_be_returned_successfully() {
+    void when_FindByTitle_does_not_match_any_video_an_empty_list_should_be_returned_successfully() throws VideoNotFoundException {
         List<Video> videos = videoRepository.find("Tragos y encierro");
         videos = (videos == null) ? new ArrayList<>() : videos;
         assertTrue(videos.isEmpty());
