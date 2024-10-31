@@ -3,6 +3,8 @@ package culturemedia.service.impl;
 import culturemedia.exceptions.VideoNotFoundException;
 import culturemedia.model.Video;
 import culturemedia.model.View;
+import culturemedia.repository.VideoRepository;
+import culturemedia.repository.ViewsRepository;
 import culturemedia.service.CultureMediaService;
 
 import java.util.ArrayList;
@@ -10,16 +12,17 @@ import java.util.List;
 
 public class CultureMediaServiceImpl implements CultureMediaService {
 
-    private final List<Video> videos;
-    private final List<View> views;
+    VideoRepository videoRepository;
+    ViewsRepository viewsRepository;
 
-    public CultureMediaServiceImpl() {
-        views = new ArrayList<>();
-        videos = new ArrayList<>();
+    public CultureMediaServiceImpl(VideoRepository videoRepository, ViewsRepository viewsRepository) {
+        this.videoRepository = videoRepository;
+        this.viewsRepository = viewsRepository;
     }
 
     @Override
     public List<Video> findAll() throws VideoNotFoundException {
+        List<Video> videos = this.videoRepository.findAll();
         if (videos.isEmpty()) {
             throw new VideoNotFoundException();
         }
@@ -28,41 +31,23 @@ public class CultureMediaServiceImpl implements CultureMediaService {
 
     @Override
     public Video save(Video video) {
-        this.videos.add(video);
+        this.videoRepository.save(video);
         return video;
     }
 
     @Override
     public View save(View view) {
-        this.views.add(view);
+        this.viewsRepository.save(view);
         return view;
     }
 
     @Override
     public List<Video> find(String title) throws VideoNotFoundException {
-        List<Video> filteredVideos = null;
-        for (Video video : videos) {
-            if (video.title().toLowerCase().contains(title.toLowerCase())) {
-                if (filteredVideos == null) {
-                    filteredVideos = new ArrayList<Video>();
-                }
-                filteredVideos.add(video);
-            }
-        }
-        return filteredVideos;
+        return this.videoRepository.find(title);
     }
 
     @Override
     public List<Video> find(Double fromDuration, Double toDuration) throws VideoNotFoundException {
-        List<Video> filteredVideos = new ArrayList<Video>();
-        for (Video video : videos) {
-            if (video.duration() > fromDuration && video.duration() < toDuration) {
-                filteredVideos.add(video);
-            }
-        }
-        if (filteredVideos.isEmpty()) {
-            throw new VideoNotFoundException();
-        }
-        return filteredVideos;
+        return this.videoRepository.find(fromDuration, toDuration);
     }
 }

@@ -17,11 +17,16 @@ public class CultureMediaController {
 
 	public List<Video> findAllVideos() throws VideoNotFoundException {
 		try{
-			List<Video> videos =cultureMediaService.findAll();
+			List<Video> videos = cultureMediaService.findAll();
 			return videos;
 		}catch (VideoNotFoundException videoNotFoundException){
 			throw new VideoNotFoundException();
 		}
+	}
+
+	public Video add(Video video) {
+		cultureMediaService.save(video);
+		return video;
 	}
 
 
